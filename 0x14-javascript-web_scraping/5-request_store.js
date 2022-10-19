@@ -1,14 +1,25 @@
 #!/usr/bin/node
-
 const request = require('request');
 const fs = require('fs');
-const url = process.argv[2];
-const filePath = process.argv[3];
+const URL = process.argv[2];
+const destPath = process.argv[3];
 
-request(url, function (err, response, body) {
-  if (err) {
-    console.log(err);
+// Makes API request, will print error object if occurs
+
+request(URL, function (error, response, body) {
+  if (error) {
+    console.log(error);
   } else {
-    fs.writeFile(filePath, body, 'utf-8');
+    // Takes results and deserializes from JSON to js obj
+    // console.log(Object.prototype.toString.call(array)) to confirm obj type
+
+    const obj = body;
+
+    // writes obj to file
+    fs.appendFile(destPath, obj, 'utf8', function (err) {
+      if (err) {
+        console.log(err);
+      }
+    });
   }
 });
